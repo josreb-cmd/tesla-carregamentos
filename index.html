@@ -1,3 +1,6 @@
+Tesla carregamentos · HTML
+Copiar
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -220,7 +223,7 @@
 </div>
  
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyqXSzpepLYMKhbJXr9CrFvKRrsVlgqolIdpm98c3Iqv-l5EnKO5fdSBzGdNNkYccKd/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwh_qogxQIsuqlgmZg36VucHZX22ci8YIf-y4-Tuuxmw9u4q9v77vKgqiELg_acpYPG/exec';
 let transactions = [];
 let PASSWORD = '';
  
@@ -236,11 +239,7 @@ async function unlockApp() {
   setStatus('A verificar...', 'loading');
   document.getElementById('pwError').style.display = 'none';
   try {
-    const res = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password, action: 'read' })
-    });
+    const res = await fetch(`${SCRIPT_URL}?password=${encodeURIComponent(password)}&action=read`);
     const data = await res.json();
     if (data.error) {
       document.getElementById('pwError').style.display = 'block';
@@ -260,11 +259,9 @@ async function unlockApp() {
 }
  
 async function callScript(action, data) {
-  const res = await fetch(SCRIPT_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ password: PASSWORD, action, data })
-  });
+  let url = `${SCRIPT_URL}?password=${encodeURIComponent(PASSWORD)}&action=${action}`;
+  if (data) url += `&data=${encodeURIComponent(JSON.stringify(data))}`;
+  const res = await fetch(url);
   return await res.json();
 }
  
@@ -278,7 +275,7 @@ async function loadTransactions() {
     transactions.sort((a, b) => b.date.localeCompare(a.date));
     setStatus('Sincronizado ✓', 'ok');
   } catch(e) {
-    setStatus('Erro de ligação', 'error');
+    setStatus('Erro de sincronização', 'error');
     transactions = [];
   }
   render();
