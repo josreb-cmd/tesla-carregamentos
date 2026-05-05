@@ -27,7 +27,7 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.5; min-height: 100vh; }
-
+ 
   .header { border-bottom: 1px solid var(--border); padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; }
   .header-left { display: flex; align-items: center; gap: 12px; }
   .logo { width: 32px; height: 32px; }
@@ -40,12 +40,12 @@
   .dot.loading { background: var(--amber); animation: pulse 1s infinite; }
   .dot.error { background: var(--red); }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
+ 
   .main { max-width: 900px; margin: 0 auto; padding: 2rem; }
-
+ 
   .section { margin-bottom: 2rem; }
   .section-label { font-size: 11px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; font-family: 'DM Mono', monospace; margin-bottom: 1rem; }
-
+ 
   .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 2rem; }
   .metric { background: var(--surface); padding: 1.25rem 1.5rem; }
   .metric-label { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
@@ -53,7 +53,7 @@
   .metric-value.green { color: var(--green); }
   .metric-value.red { color: var(--red); }
   .metric-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
-
+ 
   .user-section { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 2rem; }
   .user-card { background: var(--surface); padding: 1.25rem 1.5rem; }
   .user-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
@@ -67,13 +67,13 @@
   .bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
   .bar-jose { background: var(--jose); }
   .bar-alex { background: var(--alex); }
-
+ 
   .filter-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 2rem; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; }
   .filter-row label { font-size: 12px; color: var(--text2); font-family: 'DM Mono', monospace; }
   .filter-row input[type="date"] { background: var(--surface2); border: 1px solid var(--border2); color: var(--text); border-radius: 6px; padding: 6px 10px; font-size: 13px; font-family: 'DM Mono', monospace; height: 34px; }
   .filter-row input[type="date"]:focus { outline: none; border-color: var(--blue); }
   .filter-row .sep { color: var(--text3); }
-
+ 
   .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr 120px 120px; gap: 10px; align-items: end; }
   .form-group { display: flex; flex-direction: column; gap: 6px; }
@@ -83,7 +83,7 @@
   .form-group select option { background: var(--surface2); }
   .form-bottom { display: flex; gap: 10px; align-items: center; margin-top: 12px; }
   .form-group.wide { grid-column: span 2; }
-
+ 
   .btn { height: 38px; padding: 0 18px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border2); background: transparent; color: var(--text2); font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
   .btn:hover { border-color: var(--text2); color: var(--text); }
   .btn-primary { background: var(--text); color: var(--bg); border-color: var(--text); }
@@ -91,7 +91,7 @@
   .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
   .btn-sm { height: 28px; padding: 0 10px; font-size: 12px; border-color: var(--border); color: var(--text3); }
   .btn-sm:hover { border-color: var(--red); color: var(--red); background: rgba(230,57,70,0.08); }
-
+ 
   table { width: 100%; border-collapse: collapse; }
   thead th { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; padding: 0 12px 10px; text-align: left; border-bottom: 1px solid var(--border); }
   thead th:last-child { text-align: right; }
@@ -102,22 +102,22 @@
   td.mono { font-family: 'DM Mono', monospace; }
   td.right { text-align: right; }
   td.muted { color: var(--text2); }
-
+ 
   .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; font-family: 'DM Mono', monospace; }
   .badge-jose { background: var(--jose-bg); color: var(--jose); }
   .badge-alex { background: var(--alex-bg); color: var(--alex); }
   .disc-tag { font-size: 11px; color: var(--green); font-family: 'DM Mono', monospace; }
-
+ 
   .empty { text-align: center; padding: 3rem; color: var(--text3); font-size: 14px; }
   .table-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-
+ 
   .api-config { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; }
   .api-config p { font-size: 13px; color: var(--text2); margin-bottom: 12px; line-height: 1.6; }
   .api-config code { font-family: 'DM Mono', monospace; background: var(--surface2); padding: 2px 6px; border-radius: 4px; font-size: 12px; color: var(--amber); }
   .api-input-row { display: flex; gap: 10px; }
   .api-input-row input { flex: 1; background: var(--surface2); border: 1px solid var(--border2); color: var(--text); border-radius: 6px; padding: 0 12px; font-size: 13px; height: 38px; font-family: 'DM Mono', monospace; }
   .api-input-row input:focus { outline: none; border-color: var(--blue); }
-
+ 
   @media (max-width: 640px) {
     .main { padding: 1rem; }
     .metrics { grid-template-columns: 1fr; }
@@ -128,7 +128,7 @@
 </style>
 </head>
 <body>
-
+ 
 <div class="header">
   <div class="header-left">
     <svg class="logo" viewBox="0 0 32 32" fill="none">
@@ -146,9 +146,9 @@
     <div class="sync-status"><div class="dot" id="dot"></div><span id="statusText">A carregar...</span></div>
   </div>
 </div>
-
+ 
 <div class="main">
-
+ 
   <!-- Password config -->
   <div class="api-config" id="apiConfig">
     <div class="section-label">Acesso</div>
@@ -159,7 +159,7 @@
     </div>
     <div id="pwError" style="font-size:12px;color:var(--red);margin-top:8px;display:none">Password incorreta. Tenta novamente.</div>
   </div>
-
+ 
   <!-- Filtro período -->
   <div class="filter-row">
     <label>Período</label>
@@ -169,13 +169,13 @@
     <button class="btn" onclick="clearFilter()">Limpar filtro</button>
     <button class="btn" onclick="loadTransactions()" style="margin-left:auto">↻ Sincronizar</button>
   </div>
-
+ 
   <!-- Métricas -->
   <div id="summarySection" style="display:none">
     <div class="metrics" id="metricsEl"></div>
     <div class="user-section" id="userSection"></div>
   </div>
-
+ 
   <!-- Formulário -->
   <div class="form-card">
     <div class="section-label">Nova transação</div>
@@ -208,7 +208,7 @@
       <button class="btn btn-primary" id="addBtn" onclick="addTx()">Adicionar transação</button>
     </div>
   </div>
-
+ 
   <!-- Tabela -->
   <div class="table-card">
     <div style="padding:1rem 1.25rem 0.5rem;border-bottom:1px solid var(--border)">
@@ -216,65 +216,59 @@
     </div>
     <div id="txTable"></div>
   </div>
-
+ 
 </div>
-
+ 
 <script>
 const SHEET_ID = '1u_dVIV9fp4MqC1BPYrL8b7VlgFSdluHhEL3O_zKfT8w';
 const WORKER_URL = 'https://tesla-auth.josreb.workers.dev';
 let transactions = [];
-let API_KEY = '';
-
+let PASSWORD = '';
+ 
 function setStatus(msg, state='ok') {
   document.getElementById('statusText').textContent = msg;
   const dot = document.getElementById('dot');
   dot.className = 'dot' + (state==='loading'?' loading':state==='error'?' error':'');
 }
-
+ 
 async function unlockApp() {
   const password = document.getElementById('passwordInput').value.trim();
   if (!password) return;
   setStatus('A verificar...', 'loading');
   document.getElementById('pwError').style.display = 'none';
   try {
+    // Verify password by sending a test prompt
     const res = await fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password })
+      body: JSON.stringify({ password, prompt: 'Reply with {"ok":true}' })
     });
     if (!res.ok) {
       document.getElementById('pwError').style.display = 'block';
       setStatus('Password incorreta', 'error');
       return;
     }
-    const data = await res.json();
-    API_KEY = data.key;
+    PASSWORD = password;
     document.getElementById('apiConfig').style.display = 'none';
     loadTransactions();
   } catch(e) {
     setStatus('Erro de ligação', 'error');
   }
 }
-
+ 
 async function callClaude(prompt) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+  const res = await fetch(WORKER_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-api-key': API_KEY, 'anthropic-version': '2023-06-01', 'anthropic-beta': 'mcp-client-2025-04-04' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      system: 'You are a data assistant. Always respond with valid JSON only, no markdown, no explanation.',
-      messages: [{ role: 'user', content: prompt }],
-      mcp_servers: [{ type: 'url', url: 'https://drivemcp.googleapis.com/mcp/v1', name: 'gdrive' }]
-    })
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password: PASSWORD, prompt })
   });
   if (!res.ok) throw new Error('API error ' + res.status);
   const data = await res.json();
   return data.content.filter(b => b.type === 'text').map(b => b.text).join('');
 }
-
+ 
 async function loadTransactions() {
-  if (!API_KEY) return;
+  if (!PASSWORD) return;
   document.getElementById('apiConfig').style.display = 'none';
   setStatus('A sincronizar...', 'loading');
   try {
@@ -296,7 +290,7 @@ async function loadTransactions() {
   }
   render();
 }
-
+ 
 async function addTx() {
   const date = document.getElementById('txDate').value;
   const user = document.getElementById('txUser').value;
@@ -320,7 +314,7 @@ async function addTx() {
   }
   btn.disabled = false; btn.textContent = 'Adicionar transação';
 }
-
+ 
 async function deleteTx(id) {
   if (!confirm('Eliminar esta transação?')) return;
   const tx = transactions.find(t => t.id === id);
@@ -334,13 +328,13 @@ async function deleteTx(id) {
     setStatus('Erro ao eliminar', 'error');
   }
 }
-
+ 
 function clearFilter() {
   document.getElementById('dateFrom').value = '';
   document.getElementById('dateTo').value = '';
   render();
 }
-
+ 
 function getFiltered() {
   const from = document.getElementById('dateFrom').value || null;
   const to = document.getElementById('dateTo').value || null;
@@ -350,9 +344,9 @@ function getFiltered() {
     return true;
   });
 }
-
+ 
 function fmt(v) { return v.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
-
+ 
 function render() {
   const filtered = getFiltered();
   const users = ['José', 'Alex'];
@@ -367,7 +361,7 @@ function render() {
     grandDiscount += t.discount;
   });
   const grandNet = grandTotal - grandDiscount;
-
+ 
   const ss = document.getElementById('summarySection');
   if (filtered.length > 0) {
     ss.style.display = '';
@@ -393,7 +387,7 @@ function render() {
   } else {
     ss.style.display = 'none';
   }
-
+ 
   const tt = document.getElementById('txTable');
   if (filtered.length === 0) {
     tt.innerHTML = '<div class="empty">Nenhuma transação no período selecionado.</div>';
@@ -418,7 +412,7 @@ function render() {
     </tr>`).join('')}</tbody>
   </table>`;
 }
-
+ 
 // Init
 document.getElementById('txDate').value = new Date().toISOString().split('T')[0];
 setStatus('Aguarda login', 'error');
