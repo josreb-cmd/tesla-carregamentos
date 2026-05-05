@@ -7,23 +7,23 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d0d0d;
-    --surface: #161616;
-    --surface2: #1e1e1e;
-    --border: #2a2a2a;
-    --border2: #333;
-    --text: #f0f0f0;
-    --text2: #888;
-    --text3: #555;
-    --red: #e63946;
-    --green: #2ec27e;
-    --blue: #4a9eff;
-    --amber: #f4a261;
-    --jose: #4a9eff;
-    --jose-bg: rgba(74,158,255,0.12);
-    --alex: #2ec27e;
-    --alex-bg: rgba(46,194,126,0.12);
-    --accent: #e63946;
+    --bg: #f5f5f3;
+    --surface: #ffffff;
+    --surface2: #f0f0ee;
+    --border: #e0e0dc;
+    --border2: #d0d0cc;
+    --text: #1a1a1a;
+    --text2: #666666;
+    --text3: #999999;
+    --red: #c0392b;
+    --green: #1a7a4a;
+    --blue: #1a6abf;
+    --amber: #c0720a;
+    --jose: #1a6abf;
+    --jose-bg: rgba(26,106,191,0.08);
+    --alex: #1a7a4a;
+    --alex-bg: rgba(26,122,74,0.08);
+    --accent: #c0392b;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.5; min-height: 100vh; }
@@ -149,14 +149,15 @@
 
 <div class="main">
 
-  <!-- API Key config -->
+  <!-- Password config -->
   <div class="api-config" id="apiConfig">
-    <div class="section-label">Configuração</div>
-    <p>Esta app usa a API da Anthropic para ler e escrever na tua Google Sheet. Insere a tua <code>API Key</code> da Anthropic para começar. A chave é guardada apenas no teu browser.</p>
+    <div class="section-label">Acesso</div>
+    <p>Insere a <code>password</code> para aceder à app.</p>
     <div class="api-input-row">
-      <input type="password" id="apiKeyInput" placeholder="sk-ant-..." />
-      <button class="btn btn-primary" onclick="saveApiKey()">Guardar e carregar</button>
+      <input type="password" id="passwordInput" placeholder="password..." onkeydown="if(event.key==='Enter') unlockApp()" />
+      <button class="btn btn-primary" onclick="unlockApp()">Entrar</button>
     </div>
+    <div id="pwError" style="font-size:12px;color:var(--red);margin-top:8px;display:none">Password incorreta. Tenta novamente.</div>
   </div>
 
   <!-- Filtro período -->
@@ -220,8 +221,9 @@
 
 <script>
 const SHEET_ID = '1u_dVIV9fp4MqC1BPYrL8b7VlgFSdluHhEL3O_zKfT8w';
+const WORKER_URL = 'https://tesla-auth.josreb.workers.dev';
 let transactions = [];
-let API_KEY = localStorage.getItem('tesla_api_key') || '';
+let API_KEY = '';
 
 function setStatus(msg, state='ok') {
   document.getElementById('statusText').textContent = msg;
@@ -229,13 +231,29 @@ function setStatus(msg, state='ok') {
   dot.className = 'dot' + (state==='loading'?' loading':state==='error'?' error':'');
 }
 
-function saveApiKey() {
-  const key = document.getElementById('apiKeyInput').value.trim();
-  if (!key.startsWith('sk-ant-')) { alert('Chave inválida. Deve começar com sk-ant-'); return; }
-  API_KEY = key;
-  localStorage.setItem('tesla_api_key', key);
-  document.getElementById('apiConfig').style.display = 'none';
-  loadTransactions();
+async function unlockApp() {
+  const password = document.getElementById('passwordInput').value.trim();
+  if (!password) return;
+  setStatus('A verificar...', 'loading');
+  document.getElementById('pwError').style.display = 'none';
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password })
+    });
+    if (!res.ok) {
+      document.getElementById('pwError').style.display = 'block';
+      setStatus('Password incorreta', 'error');
+      return;
+    }
+    const data = await res.json();
+    API_KEY = data.key;
+    document.getElementById('apiConfig').style.display = 'none';
+    loadTransactions();
+  } catch(e) {
+    setStatus('Erro de ligação', 'error');
+  }
 }
 
 async function callClaude(prompt) {
@@ -403,13 +421,8 @@ function render() {
 
 // Init
 document.getElementById('txDate').value = new Date().toISOString().split('T')[0];
-if (API_KEY) {
-  document.getElementById('apiConfig').style.display = 'none';
-  loadTransactions();
-} else {
-  setStatus('Sem chave API', 'error');
-  render();
-}
+setStatus('Aguarda login', 'error');
+render();
 </script>
 </body>
 </html>
