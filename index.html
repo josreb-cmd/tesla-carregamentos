@@ -1,3 +1,6 @@
+Tesla carregamentos · HTML
+Copiar
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -132,8 +135,9 @@
     .form-grid { display: flex !important; flex-direction: column !important; gap: 10px; }
     .form-group { width: 100% !important; }
     .form-group input, .form-group select { height: 44px; font-size: 16px; width: 100%; }
-    .filter-row { gap: 6px; padding: 0.75rem; }
-    .filter-row input[type="date"] { flex: 1; min-width: 0; font-size: 12px; padding: 6px; }
+    .filter-row { gap: 6px; padding: 0.75rem; flex-wrap: wrap; }
+    .filter-row input[type="date"] { flex: 1; min-width: 130px; font-size: 13px; padding: 8px 6px; height: 40px; }
+    .filter-row .btn { flex: 1; }
     .col-local, .col-desconto { display: none; }
     table { font-size: 12px; }
     td { padding: 8px 6px; }
@@ -418,7 +422,7 @@ function render() {
   if (filtered.length > 0) {
     ss.style.display = '';
     document.getElementById('metricsEl').innerHTML = `
-      <div class="metric"><div class="metric-label">Custo bruto total</div><div class="metric-value">${fmt(grandTotal)}</div><div class="metric-sub">${filtered.length} transação${filtered.length !== 1 ? 'ões' : ''}</div></div>
+      <div class="metric"><div class="metric-label">Custo bruto total</div><div class="metric-value">${fmt(grandTotal)}</div><div class="metric-sub">${filtered.length} ${filtered.length !== 1 ? 'transações' : 'transação'}</div></div>
       <div class="metric"><div class="metric-label">Total descontos</div><div class="metric-value green">-${fmt(grandDiscount)}</div><div class="metric-sub">poupança total</div></div>
       <div class="metric"><div class="metric-label">Custo líquido</div><div class="metric-value">${fmt(grandNet)}</div><div class="metric-sub">após descontos</div></div>
     `;
