@@ -239,7 +239,7 @@
 </div>
  
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwh_qogxQIsuqlgmZg36VucHZX22ci8YIf-y4-Tuuxmw9u4q9v77vKgqiELg_acpYPG/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyEBHDQkGXnoxGE8X0s1Fd3C-BMAQ5Sc-BOaCXBFDo0PvzsmGMNmRTKjeeKthUKfU-0/exec';
 let transactions = [];
 let PASSWORD = '';
  
@@ -281,7 +281,7 @@ async function unlockApp() {
 async function callScript(action, data) {
   let url = `${SCRIPT_URL}?password=${encodeURIComponent(PASSWORD)}&action=${action}`;
   if (data) url += `&data=${encodeURIComponent(JSON.stringify(data))}`;
-  const res = await fetch(url);
+  const res = await fetch(url, { redirect: 'follow' });
   return await res.json();
 }
  
@@ -335,7 +335,7 @@ async function deleteTx(id) {
   if (!tx) return;
   setStatus('A eliminar...', 'loading');
   try {
-    await callScript('delete', { date: tx.date, user: tx.user, amount: tx.amount });
+    await callScript('delete', { date: fmtDate(tx.date), user: tx.user, amount: tx.amount });
     await loadTransactions();
   } catch(e) {
     setStatus('Erro ao eliminar', 'error');
