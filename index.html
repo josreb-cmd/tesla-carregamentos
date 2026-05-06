@@ -118,6 +118,9 @@
   .api-input-row input { flex: 1; background: var(--surface2); border: 1px solid var(--border2); color: var(--text); border-radius: 6px; padding: 0 12px; font-size: 13px; height: 38px; font-family: 'DM Mono', monospace; }
   .api-input-row input:focus { outline: none; border-color: var(--blue); }
  
+  .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: #fff; padding: 0.75rem 1.5rem; border-radius: 8px; font-size: 13px; font-family: 'DM Sans', sans-serif; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+ 
   @media (max-width: 640px) {
     .main { padding: 0.75rem; }
     .header { padding: 0.75rem 1rem; flex-wrap: wrap; gap: 8px; }
@@ -238,10 +241,19 @@
  
 </div>
  
+<div class="toast" id="toast"></div>
+ 
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyEBHDQkGXnoxGE8X0s1Fd3C-BMAQ5Sc-BOaCXBFDo0PvzsmGMNmRTKjeeKthUKfU-0/exec';
 let transactions = [];
 let PASSWORD = '';
+ 
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
  
 function setStatus(msg, state='ok') {
   document.getElementById('statusText').textContent = msg;
@@ -337,6 +349,7 @@ async function deleteTx(id) {
   try {
     await callScript('delete', { date: fmtDate(tx.date), user: tx.user, amount: tx.amount });
     await loadTransactions();
+    showToast('Transação eliminada com sucesso');
   } catch(e) {
     setStatus('Erro ao eliminar', 'error');
   }
