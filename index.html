@@ -1,6 +1,3 @@
-Tesla carregamentos · HTML
-Copiar
-
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -122,11 +119,29 @@ Copiar
   .api-input-row input:focus { outline: none; border-color: var(--blue); }
  
   @media (max-width: 640px) {
-    .main { padding: 1rem; }
+    .main { padding: 0.75rem; }
+    .header { padding: 0.75rem 1rem; flex-wrap: wrap; gap: 8px; }
+    .sheet-link { display: none; }
     .metrics { grid-template-columns: 1fr; }
+    .metric-value { font-size: 20px; }
     .user-section { grid-template-columns: 1fr; }
     .form-grid { grid-template-columns: 1fr 1fr; }
-    .header { padding: 1rem; }
+    .form-group.wide { grid-column: span 2; }
+    .filter-row { gap: 6px; padding: 0.75rem; }
+    .filter-row input[type="date"] { flex: 1; min-width: 0; font-size: 12px; padding: 6px; }
+    .col-local, .col-desconto { display: none; }
+    table { font-size: 12px; }
+    td { padding: 8px 6px; }
+    thead th { padding: 0 6px 8px; font-size: 10px; }
+    .btn { height: 44px; font-size: 14px; }
+    .btn-sm { height: 32px; padding: 0 8px; }
+    .form-group input, .form-group select { height: 44px; font-size: 16px; }
+    .api-input-row { flex-direction: column; }
+    .api-input-row input { height: 44px; font-size: 16px; }
+  }
+  @media (min-width: 641px) and (max-width: 900px) {
+    .main { padding: 1.5rem; }
+    .form-grid { grid-template-columns: 1fr 1fr 100px 100px; }
   }
 </style>
 </head>
@@ -248,7 +263,11 @@ async function unlockApp() {
     }
     PASSWORD = password;
     transactions = Array.isArray(data) ? data : [];
-    transactions.forEach(t => { t.amount = parseFloat(t.amount)||0; t.discount = parseFloat(t.discount)||0; });
+    transactions.forEach(t => {
+      t.date = normalizeDate(t.date);
+      t.amount = parseFloat(t.amount)||0;
+      t.discount = parseFloat(t.discount)||0;
+    });
     transactions.sort((a,b) => b.date.localeCompare(a.date));
     document.getElementById('apiConfig').style.display = 'none';
     setStatus('Sincronizado ✓', 'ok');
@@ -271,7 +290,11 @@ async function loadTransactions() {
   try {
     const data = await callScript('read');
     transactions = Array.isArray(data) ? data : [];
-    transactions.forEach(t => { t.amount = parseFloat(t.amount)||0; t.discount = parseFloat(t.discount)||0; });
+    transactions.forEach(t => {
+      t.date = normalizeDate(t.date);
+      t.amount = parseFloat(t.amount)||0;
+      t.discount = parseFloat(t.discount)||0;
+    });
     transactions.sort((a, b) => b.date.localeCompare(a.date));
     setStatus('Sincronizado ✓', 'ok');
   } catch(e) {
@@ -282,7 +305,9 @@ async function loadTransactions() {
 }
  
 async function addTx() {
-  const date = document.getElementById('txDate').value;
+  const dateRaw = document.getElementById('txDate').value; // YYYY-MM-DD from input
+  const [dy, dm, dd] = dateRaw.split('-');
+  const date = `${dd}-${dm}-${dy}`; // DD-MM-YYYY for sheet
   const user = document.getElementById('txUser').value;
   const amount = parseFloat(document.getElementById('txAmount').value) || 0;
   const discount = parseFloat(document.getElementById('txDiscount').value) || 0;
@@ -334,6 +359,33 @@ function getFiltered() {
  
 function fmt(v) { return v.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
  
+// Normalize any date format to YYYY-MM-DD for sorting/filtering
+function normalizeDate(d) {
+  if (!d) return '';
+  d = String(d).trim();
+  // DD/MM/YYYY or DD-MM-YYYY
+  if (/^\d{2}[\/-]\d{2}[\/-]\d{4}$/.test(d)) {
+    const [day, month, year] = d.split(/[\/-]/);
+    return `${year}-${month}-${day}`;
+  }
+  // YYYY-MM-DD already
+  if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+  // Try parsing as Date object (e.g. from Sheets serial)
+  const parsed = new Date(d);
+  if (!isNaN(parsed)) {
+    return parsed.toISOString().split('T')[0];
+  }
+  return d;
+}
+ 
+// Display date as DD-MM-YYYY
+function fmtDate(d) {
+  const iso = normalizeDate(d);
+  if (!iso) return '—';
+  const [y, m, day] = iso.split('-');
+  return `${day}-${m}-${y}`;
+}
+ 
 function render() {
   const filtered = getFiltered();
   const users = ['José', 'Alex'];
@@ -382,18 +434,18 @@ function render() {
   }
   tt.innerHTML = `<table>
     <thead><tr>
-      <th>Data</th><th>Local</th><th>Utilizador</th>
+      <th>Data</th><th class="col-local">Local</th><th>Utilizador</th>
       <th style="text-align:right">Valor</th>
-      <th style="text-align:right">Desconto</th>
+      <th class="col-desconto" style="text-align:right">Desconto</th>
       <th style="text-align:right">Líquido</th>
       <th style="text-align:right"></th>
     </tr></thead>
     <tbody>${filtered.map(t => `<tr>
-      <td class="mono muted" style="white-space:nowrap">${t.date.split('-').reverse().join('/')}</td>
-      <td class="muted">${t.location || '—'}</td>
+      <td class="mono muted" style="white-space:nowrap">${fmtDate(t.date)}</td>
+      <td class="muted col-local">${t.location || '—'}</td>
       <td><span class="badge badge-${t.user === 'José' ? 'jose' : 'alex'}">${t.user}</span></td>
       <td class="mono right">${fmt(t.amount)}</td>
-      <td class="right">${t.discount > 0 ? `<span class="disc-tag">-${fmt(t.discount)}</span>` : '<span class="muted">—</span>'}</td>
+      <td class="right col-desconto">${t.discount > 0 ? `<span class="disc-tag">-${fmt(t.discount)}</span>` : '<span class="muted">—</span>'}</td>
       <td class="mono right" style="font-weight:500">${fmt(t.amount - t.discount)}</td>
       <td class="right"><button class="btn btn-sm" onclick="deleteTx(${t.id})">✕</button></td>
     </tr>`).join('')}</tbody>
