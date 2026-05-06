@@ -342,7 +342,6 @@ async function addTx() {
 }
  
 async function deleteTx(id) {
-  if (!confirm('Eliminar esta transação?')) return;
   const tx = transactions.find(t => t.id === id);
   if (!tx) return;
   setStatus('A eliminar...', 'loading');
